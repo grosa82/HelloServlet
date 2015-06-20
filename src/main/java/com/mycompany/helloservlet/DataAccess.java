@@ -9,6 +9,7 @@ import com.mycompany.helloservlet.model.Post;
 import com.mycompany.helloservlet.model.SuccessMessage;
 import com.mycompany.helloservlet.model.User;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -31,14 +32,22 @@ public class DataAccess {
         return pathPrefix + "\\" + type + ".data";
     }
 
-    private JSONArray getJSONArrayFromFile(String type) {
+    private boolean fileExists(String type) {
+        File file = new File(getPath(type));
+        return file.exists();
+    }
 
+    private JSONArray getJSONArrayFromFile(String type) {
         JSONParser parser = new JSONParser();
         JSONArray array = null;
-        try {
-            array = (JSONArray) parser.parse(new FileReader(getPath(type)));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (fileExists(type)) {
+            try {
+                array = (JSONArray) parser.parse(new FileReader(getPath(type)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            array = new JSONArray();
         }
         return array;
     }

@@ -36,19 +36,18 @@ public class Posts extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession(true);
-        if (session.getAttribute("username") == null)
-        {
+        if (session.getAttribute("username") == null) {
             SuccessMessage message = new SuccessMessage(false, "Please sign in first");
             session.setAttribute("message", message);
             response.sendRedirect("index.jsp");
+        } else {
+            String username = (String) session.getAttribute("username");
+
+            request.setAttribute("posts", new Post().getPosts(username));
+            request.getRequestDispatcher("home.jsp").forward(request, response);
         }
-        
-        String username = (String) session.getAttribute("username");
-        
-        request.setAttribute("posts", new Post().getPosts(username));
-        request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 
     /**
@@ -62,16 +61,16 @@ public class Posts extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession(true);
         String username = (String) session.getAttribute("username");
-        
+
         Post post = new Post();
-        post.setMessage(request.getParameter("message"));
+        post.setMessage(request.getParameter("message").replace("\n", "<br />"));
         post.setUsername(username);
         post.setDate(new Date());
         post.createPost();
-        
+
         response.sendRedirect("Posts");
     }
 }

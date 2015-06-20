@@ -21,13 +21,17 @@
             <br />
             <a href="Logout" style="float: right;">Logout</a>
             <form class="form-signin" method="post" action="Posts">
-                <h2 class="form-signin-heading">New post</h2>
+                <div class="page-header">
+                    <h1>New post</h1>
+                </div>
                 <label for="message" class="sr-only">Message</label>
-                <input type="text" id="message" name="message" class="form-control" placeholder="Your message" required autofocus>
+                <textarea name="message" style="width: 100%" rows="5" class="form-control" required autofocus></textarea>
                 <br />
                 <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 200px;">Post</button>
             </form>
-            <hr />
+            <div class="page-header">
+                <h1>Previous posts</h1>
+            </div>
             <core:forEach var="post" items="${posts}">
                 <core:choose>
                     <core:when test="${post.mine}">
