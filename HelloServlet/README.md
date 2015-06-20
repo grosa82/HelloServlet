@@ -1,2 +1,0 @@
-# HelloServlet
-Testing jenkins
